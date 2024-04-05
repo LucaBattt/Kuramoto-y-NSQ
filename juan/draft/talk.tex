@@ -1,0 +1,1354 @@
+\documentclass{beamer}
+%
+% Choose how your presentation looks.
+%
+% For more themes, color themes and font themes, see:
+% http://deic.uab.es/~iblanes/beamer_gallery/index_by_theme.html
+%
+\mode<presentation>
+{
+  \usetheme{default}      % or try Darmstadt, Madrid, Warsaw, ...
+  \usecolortheme{default} % or try albatross, beaver, crane, ...
+  \usefonttheme{default}  % or try serif, structurebold, ...
+  \setbeamertemplate{navigation symbols}{}
+  \setbeamertemplate{caption}[numbered]
+} 
+
+\usefonttheme[onlymath]{serif}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amssymb,graphicx}
+
+\newcommand{\der}[2]{\frac{d #1}{d #2}}
+\newcommand{\pder}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\bra}[1]{\left\langle #1\right|}
+\newcommand{\ket}[1]{\left| #1 \right\rangle}
+\newcommand{\bek}[3]{\left\langle #1 \right| #2 \left| #3 \right\rangle}
+\newcommand{\braket}[2]{\left\langle #1 \middle| #2  \right\rangle}
+\newcommand{\avrg}[1]{\left\langle #1 \right\rangle}
+\newcommand{\bigo}{\mathcal{O}}
+\newcommand{\arrup}[1]{\overset{\uparrow}{#1}}
+\newcommand{\arrdo}[1]{\overset{\downarrow}{#1}}
+\newcommand{\comment}[1]{{\color{red}[#1]}}
+%\newcommand{\ibar}{\frac{i}{\hbar}}
+% https://tex.stackexchange.com/questions/169254/hslash-with-other-letter
+\newcommand{\shiftleft}[2]{\makebox[0pt][r]{\makebox[#1][l]{#2}}}
+\newcommand{\shiftright}[2]{\makebox[#1][r]{\makebox[0pt][l]{#2}}}
+\newcommand{\hslashslash}{
+  \shiftleft{15pt}{
+    \raisebox{.14ex}{
+        \scalebox{.7}{
+          \rotatebox[origin=c]{0}{$-$}
+      }
+    }
+  }
+}
+\newcommand{\ibar}{%
+  {%
+   \vphantom{d}%
+   \ooalign{\kern.05em\smash{\hslashslash}\hidewidth\cr$i$\cr}%
+   \kern.05em
+  }%
+}
+
+\title[]{Diffusion Geometry}
+\author{J.I. Perotti}
+\institute{IFEG-CONICET, FaMAF-UNC}
+\date{\today}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% Uncomment these lines for an automatically generated outline.
+%\begin{frame}{Outline}
+%  \tableofcontents
+%\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Outline}
+
+%{\tiny 
+\begin{itemize}
+\item Nonlinear dimensionality reduction
+\item Diffusion Geometry
+\item Multidimensional scaling
+\end{itemize}
+%}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Adjancency matrix of a graph}
+
+A graph $\mathcal{G}=(\mathcal{V},\mathcal{E})$ involves a set of nodes $\mathcal{V}$ and a set of links $\mathcal{E} \subseteq \mathcal{V}\times \mathcal{V}$.
+\vspace{.25cm}
+
+We say there is a link between nodes $i$ and $j$ if and only if there exists an unordered pair $\{i,j\} \in \mathcal{E}$.
+
+\vspace{.25cm}
+
+the adjacency matrix of $\mathcal{G}$ $A_{ij} \in \{0,1\}$ is $A_{ij}=1$ if $\{i,j\}\in \mathcal{E}$ and $A_{ij}=0$ otherwise.
+
+\vspace{.25cm}
+
+The degree of node $i$ is $k_i=\sum_j A_{ij}$.
+
+\vspace{.25cm}
+
+The total degree or volume is $k:=\sum_i k_i = \sum_{ij} A_{ij}$.
+
+\vspace{.25cm}
+
+For each $i,j$, let $I_{ij} = \delta_{ij}$ and
+$J_{ij} = 1$, represent the adjacency matrices of the graphs of fully isolated and the fully connected nodes.
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Adjancency matrix of a multi-digraph}
+
+A multi digraph $\mathcal{D}=(\mathcal{V},\mathcal{F})$ involves a set of nodes $\mathcal{V}$ and a multi-set of edges or links $\mathcal{F} \subseteq \mathcal{V}\times \mathcal{V}$.
+%Let $\mathcal{E}_i^+$ denote the set of links with source $i$, $\mathcal{E}_i^-$ the set of links with target $i$ and $\mathcal{E}_i=\mathcal{E}_i^-\cup \mathcal{E}_i^+$ the set of links attached to $i$.
+
+\vspace{.25cm}
+
+We say there is a link from a node $j$ to a node $i$ if and only if there exists an ordered pair $(i,j) \in \mathcal{F}$.
+
+\vspace{.25cm}
+
+The adjacency matrix of $\mathcal{D}$ is $A_{ij} \in \{0,1,2,...\}$, where $A_{ij}$ is the number of times $(i,j)\in \mathcal{F}$.
+Notice, $A_{ij}=0$ if $(i,j)\notin \mathcal{F}$.
+
+\vspace{.25cm}
+
+The in-degree of node $i$ is $k^-_i=\sum_j A_{ij}$ 
+and the out-degree is 
+$k^+_i= \sum_j A^!_{ij}$ 
+where $A^!_{ij}=A_{ji}$ represents matrix transpose.
+
+\vspace{.25cm}
+
+The total degree or volume is $k:=\sum_i k_i^- = \sum_i k_i^+ = \sum_{ij} A_{ij}$.
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Incidence matrix and Laplacian matrix of a graph}
+
+Let $l$ denote a link of a graph $\mathcal{G}$.
+Let $i$ and $j$ denote a nodes.
+
+\vspace{0.25cm}
+
+The $n\times m$ matrix
+\begin{eqnarray}
+B_{li}
+=
+\left\{
+\begin{array}{ll}
+1 & \mbox{if $l=(i,j)$ for some $j$,} \\
+-1 & \mbox{if $l=(j,i)$ for some $j$ and} \\
+0 & \mbox{if $l$ is not adjacent to $i$,}
+\end{array}
+\right.
+\end{eqnarray}
+is called the incidence matrix of $\mathcal{G}$.
+
+\vspace{0.25cm}
+
+The $n\times n$ matrix
+\begin{eqnarray}
+L_{ij}
+=
+\left\{
+\begin{array}{ll}
+k^+_i & \mbox{if $i=j$} \\
+A_{ij} & \mbox{otherwise}
+\end{array}
+\right.
+\end{eqnarray}
+is called the Laplacian matrix of $\mathcal{G}$.
+
+\vspace{0.25cm}
+
+Notice,
+$L_{ij} = \sum_l B^!_{il}B_{lj}$.
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Diffusion on multi-digraphs}
+
+Suppose $\psi_i(t)\geq 0$ denotes some concentration on node $i$.
+Then, (probably) the simplest continuous time dynamical linear equation describing the flow from nodes of high concentration to nodes of low concentration of the substance is
+\begin{eqnarray}
+\label{Xeq1}
+\dot{\psi}_i
+&=&
+C
+\sum_j
+A_{ij}
+(\psi_j-\psi_i)
+\\
+&=&
+C\sum_j
+(A_{ij}-\delta_{ij} k^+_j) 
+\psi_j
+\nonumber
+\\
+&=&
+-
+C
+\sum_j
+L_{ij}
+\psi_j
+\nonumber
+\end{eqnarray}
+where $C\geq 0$ is called the diffusion constant,  $L_{ij}=D_{ij}-A_{ij}$ 
+is called the Laplacian matrix and
+$D_{ij}=\delta_{ij} k^+_j$ 
+is called the out-degree matrix.
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Laplacian matrix}
+
+By rewriting Eq.~\ref{Xeq1} in operator form
+\begin{eqnarray}
+\left(
+\frac{d}{dt}
++
+C
+L
+\right)
+\psi
+&=&
+0
+\end{eqnarray}
+we can recognize the analogy between the Laplacian operator $\Delta = \nabla^2$ and minus the Laplacian matrix $L$.
+
+\vspace{0.25cm}
+
+In fact, the graph Laplacian matrix $L$ is a sort of discretized form of $-\Delta$.
+For instance, when $\mathcal{G}$ is a lattice and the space between nodes is shrank to $0^+$, so $\psi_i(t) \to \psi(x,t)$, then $L\to -\Delta$.
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Difference matrix}
+
+\comment{Check}
+
+Similarly, we can recognize in the difference operator
+\begin{eqnarray}
+(L \psi)_i
+=
+\sum_j 
+A_{ij}
+(\psi_i-\psi_j)
+\end{eqnarray}
+a discretized form of the gradient $\nabla$.
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Random Walks on Graphs: discrete time}
+
+Let $p_i(t)$ denote the probability of finding at time $t$ a random walker on the node $i$ of the graph represented by $A_{ij}$.
+Normalization demands $\sum_i p_i(t)=1$.
+
+\vspace{0.25cm}
+
+When the random walker randomly selects with uniform distribution one of the $d_j$ links outgoing from node $j$, then
+\begin{equation}
+p_i(t+dt)
+=
+\sum_j 
+\frac{
+A_{ij}
+}{
+d_j
+}
+p_j(t)
+=
+\sum_j 
+T_{ij}
+p_j(t)
+\end{equation}
+where $dt \sim 1$ represents the time unit and $T_{ij}:=A_{ij}/d_j$ is the random walk transition probability matrix.
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Random Walks on Graphs: continuous time}
+
+Consider new time units $t':=Ct$ such that $dt' \ll 1$ while increasing $C$ such that $C':=C/dt' \sim 1$.
+Hence, we can write
+\begin{eqnarray}
+p_i(t') 
++ 
+\dot{p}_i(t') 
+\frac{dt'}{C}
++ ...
+&=&
+\sum_j
+T_{ij}
+p_j(t')
+\\
+\dot{p}_i(t')
+&=&
+\frac{C}{dt'}
+\sum_j
+\left(
+T_{ij}
+-
+\delta_{ij}
+\right)
+p_j(t')
++
+...
+\nonumber
+\\
+\dot{p}_i(t')
+&= &
+-
+C'
+\sum_j
+\mathcal{L}_{ij}
+p_j(t')
++
+...
+\nonumber
+\end{eqnarray}
+where 
+$\mathcal{L}_{ij}
+=
+\delta_{ij}
+-
+\sum_k D_{ik}^{-1} A_{kj}
+=
+\delta_{ij}
+-
+T_{ij}
+=
+\sum_k
+D_{ik}^{-1}L_{kj}$
+is called the random walk Laplacian matrix.
+
+\vspace{0.25cm}
+
+Hence, the study of diffussion and random walks essentially reduces to the study of the same linear operator, the Laplacian, since the out-degree operator is diagonal.
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Normalized Laplacian: undirected graph}
+
+For undirected networks, where $A_{ij}$ is symmetric, it is convenient to consider the normalized Laplacian
+\begin{equation}
+\mathbf{L}_{ij}
+:=
+\delta_{ij}
+-
+\sum_{kr}
+D_{ik}^{-1/2} 
+A_{kr}
+D_{rj}^{1/2} 
+=
+\sum_{kr}
+D_{ik}^{-1/2} 
+L_{kr}
+D_{rj}^{1/2} 
+\end{equation}
+because it is positive definite and, as opposed to $L_{ij}$ and $\mathcal{L}_{ij}$, it is symmetric. 
+Hence, it is easy to show that all its eigenvalues are non-negative real numbers.
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Spectral analysis: undirected graph}
+Since $\mathbf{L}_{ij}$ is symmetric and positive definite,
+the eigen-equation
+\begin{eqnarray}
+\sum_j
+\mathbf{L}_{ij}
+u_j^{(w)}
+=
+\lambda_w
+u_i^{(w)}
+\end{eqnarray}
+has eigenvalues
+$0=\lambda_1\leq \lambda_2 \leq ... \leq \lambda_n$ and eigenvectors for which $\sum_i u_i^{(w)} u_i^{(k)}=\delta_{wk}$.
+
+\vspace{.25cm}
+
+Hence, the orthonormal matrix $U_{ij}=u_i^{(j)}$ of eigenvectors and corresponding diagonal matrix $\Lambda_{kr}=\lambda_r \delta_{kr}$ of eigenvalues allow
+\begin{eqnarray}
+\mathbf{L}_{ij}
+&=&
+\sum_{kr}
+U_{ik}
+\Lambda_{kr}
+U^!_{rj}
+\end{eqnarray}
+where $U^!_{ij}=U_{ji}$ represents matrix transpose.
+
+\vspace{0.25cm}
+
+Generally, $\mathbf{L}_{ij}$ and $T_{ij}$ have the same eigenvalues but different eigenvectors.
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Equilibrium: undirected}
+
+When the Markov chain defined by $T_{ij}$ is {\em irreducible}~\cite{yanhua2010random}~\footnote{What about ergodicity?}, there exists an eigenvector $e_i$ such that
+\begin{eqnarray}
+\sum_j T_{ij} e_j = e_i
+\end{eqnarray}
+When normalized, $e_i$ represents the probability of finding the random walker at node $i$ at the stationary condition $t\to \infty$.
+
+\vspace{0.25cm}
+
+The Markov chain is {\em reversible}, meaning
+\begin{eqnarray}
+\label{Xeq7}
+T_{ij} e_j
+=
+e_i T_{ij} 
+\end{eqnarray}
+and, the eigenvector of $\mathbf{L}_{ij}$ associated to the leading eigenvalue $\lambda_1=0$ is
+$u^{(1)}_i = e_i^{1/2} = \sqrt{k^+_i/k}$.
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Motivation: Laplacians  minimize roughness}
+
+Consider the Lagrangian
+\begin{eqnarray}
+W[\psi]
+&=&
+\frac{1}{2}
+\int_{\Omega} dV\,
+\braket{\nabla \psi}{\nabla \psi}
++
+\int_{\partial \Omega} dS\,
+%\lambda(x)(\psi(x)-g(x))
+\lambda(\psi-g)
+\end{eqnarray}
+where $\lambda$ and $g$ are functions of $x\in \Omega$.
+Its extremization $\delta W[\psi]=0$ results in Laplace's equation 
+\begin{eqnarray}
+\label{Xeq11}
+\Delta \psi = 0
+\end{eqnarray}
+with boundary conditions $\psi = g$ on $\partial \Omega$.
+
+\vspace{0.25cm}
+
+In a sense
+\begin{eqnarray}
+\left| \nabla \psi \right|^2
+&=&
+\braket{\nabla \psi}{\nabla \psi}
+\end{eqnarray}
+measures the roughness of $\psi$ around $x$.
+Hence, the solution of Laplace's equation is the least rough function on $\Omega$ satisfying the constraint $g$ on $\partial \Omega$ (soap film).
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Quadratic forms}
+
+Consider some quantity $\psi_i$ defined for each vertex $i$ of an undirected network $\mathcal{G}=(\mathcal{V},\mathcal{E})$ of adjacency matrix $A_{ij}$.
+Then
+\begin{eqnarray}
+\frac{1}{2}
+\sum_{ij}
+A_{ij}
+(\psi_i-\psi_j)^2
+&=&
+\frac{1}{2}
+\sum_{ij}
+A_{ij}
+(\psi_i^2+\psi_j^2-2\psi_i\psi_j)
+\\
+&=&
+\sum_{ij}
+\delta_{ij} k_j 
+\psi_i \psi_j
+-
+\sum_{ij}
+A_{ij}
+\psi_i \psi_j
+\nonumber
+\\
+&=&
+\sum_{ij}
+\big(
+\delta_{ij} 
+k^+_j
+-
+A_{ij}
+\big)
+\psi_i \psi_j
+\nonumber
+\\
+&=&
+\sum_{ij}
+L_{ij}
+\psi_i \psi_j
+\nonumber
+\end{eqnarray}
+so the minimization of the quadratic distances between the $\psi_i$ connected by $\mathcal{G}$ is equivalent to the minimization of the quadratic form defined by the corresponding Laplacian.
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Harmonic functions}
+
+A functions $\psi(x)$ satisfying Laplace's Eq.~\ref{Xeq11} is called an harmonic function.
+
+\vspace{0.25cm}
+
+If we think of $i$ as the discretization of $x$ and of $\sum_j L_{ij} \psi_j$ as the discretization of $-\Delta \psi(x)$, then we can think of the solution $\psi_i(t\to \infty)$ of Eq.~\ref{Xeq1} as an harmonic function on the graph $\mathcal{G}$.
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Signal processing on Graphs}
+
+Recall standard Fourier transform
+\begin{eqnarray}
+\hat{f}(w)
+:=
+\braket{f}{e^{2\pi i wt}}
+=
+\int dx\,
+f(x)e^{-2\pi i wt}
+\end{eqnarray}
+The exponentials are eigen-functions of the 1-dim Laplace's operator
+\begin{eqnarray}
+-
+\Delta 
+e^{i 2\pi wt}
+=
+-
+\frac{\partial^2 }{\partial t^2}
+e^{i 2\pi wt}
+=
+(2\pi w)^2
+e^{i 2\pi wt}
+\end{eqnarray}
+By analogy with the eigen-equation
+\begin{eqnarray}
+\sum_j
+L_{ij} u_j^{(w)}
+=
+\lambda_k
+u_i^{(w)}
+\end{eqnarray}
+we may define
+\begin{eqnarray}
+\hat{\psi}^{(w)}
+=
+\braket{\psi}{u^{(w)}}
+=
+\sum_i
+\psi_i
+u_i^{(w)}
+\end{eqnarray}
+with the inverse transform
+\begin{eqnarray}
+\psi_i
+=
+\sum_w
+\hat{\psi}^{(w)}
+u_i^{(w)}
+\end{eqnarray}
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\begin{frame}{Poisson's equation and sources}
+
+%Consider Poisson's equation
+%\begin{eqnarray}
+%\nabla \psi = f
+%\end{eqnarray}
+%which is defined for some {\em source} function $f(x)$.
+
+%\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Generalization to digraphs}
+
+I think that a theory for the directed case is still under development.
+In particular, I like the following approach.
+
+\vspace{0.25cm}
+
+Now $A_{ij}$ is non-symmetric. Still, $T_{ij}$ and the corresponding random walks are defined in the same way.
+Moreover, when $T_{ij}$ es irreducible, the the equilibrium eigenvector of Eq.~\ref{Xeq7} still exists in this case.
+
+\vspace{0.25cm}
+
+For the directed case, it is convenient a different definition for the normalized Laplacian
+Let $E_{ij} = \delta_{ij} e_j$.
+Then
+\begin{eqnarray}
+\mathrm{L}_{ij}
+=
+\sum_{kr}
+E^{1/2}_{ik}
+(I_{kr}-T_{kr})
+E^{-1/2}_{rj}
+\end{eqnarray}
+is called the normalized digraph Laplacian, which is non-symmetric.
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Fundamental matrix}
+
+The {\em fundamental matrix} is defined as
+\begin{eqnarray}
+\label{Xeq9}
+Z_{ij} 
+:= 
+\sum_{t=0}^{\infty}
+(T_{ij}^t-e_i)
+\end{eqnarray}
+where $T_{ij}^t = \sum_j T_{ik} T_{kj}^{t-1}$ for $t=2,3,...$ and $T_{ij}^t = T_{ij}$ for $t=1$.
+
+\vspace{0.25cm}
+
+As we are going to show, the fundamental matrix is an useful tool. 
+Hence, we need a way to compute it that is more convenient than the infinite sum of Eq.~\ref{Xeq9}.
+
+\vspace{0.25cm}
+
+Then, in operator form~\cite{yanhua2010random}
+\begin{eqnarray}
+Z
+&=&
+JE + (I-T+JE)^{-1}
+\end{eqnarray}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% https://homepage.univie.ac.at/Franz.Vesely/cp_tut/nol2h/new/c5pd_s0pd.html
+
+\begin{frame}{PDEs on graphs}
+
+
+
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Theory: Green's function and inhomogeneous equations}
+
+Consider a linear operator $D_x$ acting on functions $f(x)$ over the manifold $M$ of boundary $\partial M$.
+
+We want to solve the inhomogeneous boundary value problem
+\begin{eqnarray}
+\label{Xeq27}
+D_xf(x)
+\stackrel{M}{=}
+g(x)
+\;\;\;\;
+\mbox{and}
+\;\;\;\;
+f(x)
+\stackrel{\partial M}{=}
+h(x)
+\end{eqnarray}
+Hence, for each $y\in M$, we consider the Green's function solving the inhomogeneous boundary value problem
+\begin{eqnarray}
+D_x G(x,y)
+\stackrel{M}{=}
+\delta(x-y)
+\;\;\;\;
+\mbox{and}
+\;\;\;\;
+G(x,y)
+\stackrel{\partial M}{=}
+h(x)
+\end{eqnarray}
+In this way, we obtain the solution to Eq.~\ref{Xeq23} as
+\begin{eqnarray}
+f(x)
+=
+\int_{M} dy\, 
+G(x,y) 
+g(y)
+\end{eqnarray}
+since
+\begin{eqnarray}
+D_x f(x)
+=
+\int_M dy\, 
+D_x G(x,y) 
+g(y)
+=
+\int_M dy\, 
+\delta(x-y)
+g(y)
+=
+g(x)
+.
+\end{eqnarray}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Theory: Kernel functions and boundary value problems}
+
+We want to solve the boundary value problem
+\begin{eqnarray}
+\label{Xeq23}
+D_x f(x) 
+\stackrel{M}{=}
+0
+\;\;\;\;
+\mbox{and}
+\;\;\;\;
+f(x) 
+\stackrel{\partial M}{=}
+g(x)
+\end{eqnarray}
+
+Hence, for each $y\in \partial M$, we consider the kernel $K(x,y)$ solving
+\begin{eqnarray}
+\label{Xeq23}
+D_x K(x,y) 
+\stackrel{M}{=}
+0
+\;\;\;\;
+\mbox{and}
+\;\;\;\;
+K(x,y) 
+\stackrel{M}{=}
+\delta(x-y)
+\end{eqnarray}
+In this way, we obtain the solution to Eq.~\ref{Xeq23} as
+\begin{eqnarray}
+f(x)
+=
+\int_{\partial M} dy\, 
+K(x,y) 
+g(y)
+\end{eqnarray}
+since
+\begin{eqnarray}
+D_x f(x)
+=
+\int_{\partial M} dy\, 
+D_x K(x,y) 
+g(y)
+=
+\int_{\partial M} dy\, 
+\delta(x-y)
+g(y)
+=
+g(x)
+.
+\end{eqnarray}
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% https://physics.stackexchange.com/questions/20797/differentiating-propagator-greens-function-correlation-function-etc/20812#20812 
+% https://www.youtube.com/watch?v=vxmOnq1r9q8
+
+% https://www.youtube.com/watch?v=-riPW1yt_fA
+
+\begin{frame}{Theory: Duhamel's principle}
+
+Green's functions are related to Kernel functions by Duhamel's principle.
+
+\vspace{.25cm}
+
+
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Theory: Propagators}
+
+The term propagator is some times are used for Kernels and some times for Green's functions, but in both cases involves a time coordinate.
+
+\vspace{.25cm}
+
+For instance, when $x=(x^0,x^1,x^2,x^3)$ is 4-vector, $x^0=t$ denotes time and $x^1,x^2,x^3$ denote spatial coordinates, the boundary condition $G(x,y)=0$ for $x^0<y^0$ corresponds to the retarded Green's function which is a propagator.
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Motivation: QM time evolution}
+
+Recall the time dependent Schr\"odinger's equation
+\begin{eqnarray}
+i\hbar
+\frac{\partial}{\partial t}
+\psi(t,x)
+=
+\bigg(
+\frac{\hbar^2}{2m}
+\Delta
++
+V(x)
+\bigg)
+\psi(t,x)
+=
+H
+\psi(t,x)
+\end{eqnarray}
+An Infinitesimal time evolution reads
+\begin{eqnarray}
+\psi(t+dt,x)
+&=&
+\psi(t,x)
++
+\frac{\partial}{\partial t}
+\psi(t,x)
+dt
++
+...
+\\
+&=&
+\psi(t,x)
+-
+\frac{i}{\hbar}H
+\psi(t,x)
+dt
++
+...
+\nonumber
+\\
+&=&
+\bigg(
+\mathbb{I}
+-
+\frac{i}{\hbar}H
+dt
++
+...
+\bigg)
+\psi(t,x)
+\nonumber
+\end{eqnarray}
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Motivation: QM time evolution operator}
+
+Since $H$ is a linear operator, we can compose the infinitesimal time evolution an arbitrary number of times. 
+Namely, let $t=k dt$ for $dt\ll 1$ and $k \gg 1$, we find
+\begin{eqnarray}
+\psi(t,x)
+&=&
+\lim_{k\to \infty}
+\bigg(
+\mathbb{I}
+-
+\frac{i}{\hbar}H
+\frac{t}{k}
++
+...
+\bigg)^k
+\psi(0,x)
++
+...
+\\
+&=&
+\bigg(
+\sum_{k=0}^{\infty}
+\frac{
+\big(\frac{i}{\hbar}H t\big)^k
+}{k!}
+\bigg)
+\psi(0,x)
+\nonumber
+\\
+&=&
+e^{-\frac{i}{\hbar}H t}
+\psi(0,x)
+\nonumber
+\\
+&=&
+U(t)
+\psi(0,x)
+\nonumber
+\end{eqnarray}
+where have identified the time evolution operator
+\begin{eqnarray}
+U(t)
+=
+e^{-\frac{i}{\hbar}Ht}
+\end{eqnarray}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Motivation: QM time evolution in bracket notation}
+
+Recalling the bracket notation $\psi(t,x)=\braket{x}{\psi(t)}$, we notice we have been working in the coordiantes of the basis $\ket{x}$ of the Hilbert space of states $\mathcal{H}$.
+
+\vspace{.25cm}
+
+Hence, the time evolution can be expressed as
+\begin{eqnarray}
+\ket{\psi(t)}
+=
+U(t)
+\ket{\psi(0)}
+\end{eqnarray}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Motivation: QM, Green's function}
+
+Rewrite Schr\"odinger equation as
+\begin{eqnarray}
+\bigg(
+i\hbar
+\frac{\partial}{\partial t}
++
+\frac{\hbar^2}{2m}
+\Delta
+\bigg)
+\psi(t,x)
+=
+V(x)
+\psi(t,x)
+\end{eqnarray}
+so we can find its Green's function as
+\begin{eqnarray}
+\bigg(
+i\hbar
+\frac{\partial}{\partial t}
++
+\frac{\hbar^2}{2m}
+\Delta
+\bigg)
+G(t,x,t',x')
+=
+\delta(t-t')
+\delta(x-x')
+\end{eqnarray}
+and the time evolution as
+\begin{eqnarray}
+\psi(t,x)
+=
+\int dt'  dx'\,
+G(t,x,t',x')
+\psi(t',x')
+.
+\end{eqnarray}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Motivation: QM, Green's function in bracket's notation}
+
+Using that $\int dx\, \ket{x}\bra{x}=\mathbb{I}$, we find
+\begin{eqnarray}
+\psi(t,x)
+&=&
+\braket{x}{\psi(t)}
+\\
+&=&
+\braket{x}{U(t)\psi(0)}
+\nonumber
+\\
+&=&
+\int dx'\,
+\bek{x}{U(t)}{x'}
+\braket{x'}{\psi(0)}
+\nonumber
+\\
+&=&
+\int dx'\,
+\bek{x}{U(t)}{x'}
+\psi(0,x')
+\nonumber
+\end{eqnarray}
+so we find that
+\begin{eqnarray}
+G(t,x,t',x')
+=
+\bek{x}{U(t-t')}{x'}
+\end{eqnarray}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Motivation: QM, Feynman's propagator}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Motivation: QM Path Integrals}
+
+Recall the time dependent Schr\"odinger's equation
+\begin{eqnarray}
+i\hbar
+\frac{\partial}{\partial t}
+\psi(t,x)
+=
+\bigg(
+\frac{\hbar^2}{2m}
+\Delta
++
+V(x)
+\bigg)
+\psi(t,x)
+=
+H
+\psi(t,x)
+\end{eqnarray}
+Alternatively, the time evolution in QM can be expressed as
+\begin{eqnarray}
+\psi(t,x)
+=
+\int dy\,
+K(t,x,y)
+\psi(0,y)
+\end{eqnarray}
+where the Green's function or propagator is
+\begin{eqnarray}
+K(t,x,y)
+=
+\int_{z(0)=y}^{z(t)=x} \mathcal{D}[z]\,
+e^{\frac{i}{\hbar}S[z]}
+\end{eqnarray}
+and where, for some Lagrangian $\Phi$,
+the action reads
+\begin{eqnarray}
+S[x]
+=
+\int_0^t dt'\,
+\Phi(\dot{x},x)
+\end{eqnarray}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Quantum Mechanics on graphs}
+
+Consider the vector space $\mathbb{C}^n$ and the orthonormal basis $\ket{i}$.
+We have
+\begin{eqnarray}
+\braket{i}{e^{At} j}
+=
+\sum_{\ell=0}^{\infty}
+\frac{t^{\ell}}{\ell!}
+%Y_{ij}(\ell)
+\braket{i}{A^{\ell} j}
+\end{eqnarray}
+where 
+%$Y_{ij}(\ell)=\braket{i}{A^{\ell}j}$
+$\braket{i}{A^{\ell}j}$ 
+is the number of paths from $j$ to $i$ of length $\ell$.
+
+\vspace{.25cm}
+
+Consider the spectral decomposition
+%\begin{eqnarray}
+$A
+\ket{a}
+=
+\nu_a
+\ket{a}$.
+%\end{eqnarray}
+Then
+\begin{eqnarray}
+\braket{i}{A^{\ell} j}
+=
+\sum_a
+\braket{i}{A^{\ell} a}
+\braket{a}{j}
+=
+\sum_a
+\nu_a^{\ell}
+\braket{i}{a}
+\braket{a}{j}
+\end{eqnarray}
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Path integrals on graphs}
+
+Let $\ibar=i/\hbar$ and
+\begin{eqnarray}
+Z
+&=&
+\int D\psi\,
+e^{\ibar S(\psi)}
+\end{eqnarray}
+where
+\begin{eqnarray}
+S(\psi)
+=
+\frac{1}{2}
+\sum_{ij}
+\psi_i
+(L+m^2\mathbb{I})
+\psi_j
++
+\sum_i
+F(\psi_i)
+\end{eqnarray}
+is the discretized action functional,
+$m>0$ plays the role of the mass of a quantum field, 
+\begin{eqnarray}
+F(x)
+=
+\sum_{k\geq 3}
+\frac{F_k}{k!}
+x^k
+\end{eqnarray}
+represents the self-interactions
+and
+$D\psi = \prod_i d\psi_i$
+is the integration measure over the fields on the graph~\cite{mnev2016graph}.
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{}
+
+\begin{center}
+    Thanks
+\end{center}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setbeamertemplate{bibliography item}{\insertbiblabel}
+\begin{frame}[allowframebreaks]{References}
+        %\frametitle{References}
+        %\bibliographystyle{abbrv}
+        \bibliographystyle{acm}
+        \bibliography{ref.bib}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Appendix A:}
+
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Check 1}
+
+On how graph gradients and laplacians~\cite{davies2016what}.
+On the graph laplacian computed from the incidency matrix~\cite{udacity2016spectral1}.
+
+On the graph laplacian derived from a system of masses pulled by springs~\cite{udacity2016spectral2}.
+
+On the spectral decomposition of the laplacian~\cite{udacity2016spectral3}.
+In particular, I like the general operator/matricial form of the eigen-equation
+$L(G)Q=Q\Lambda$.
+It also says that the number of edges in the cut is $\frac{1}{4}x^!L(G)x$ when $x_i=1$ for nodes $i$ in one side of the cut and $x_i=-1$ for nodes $i$ in the other sides of the cut.
+
+On how to use the second eigen-pair $\lambda_2,q_2$ to approximate the solution fo the min-cut problem~\cite{udacity2016spectral4}.
+
+Many interesting facts about graphs laplacians~\cite{speilman2017laplacian}: standard applications in physics (e.g. resistor networks, springy models, etc.) and important theoretical results about the spectrum such as the Courant-Fischer theorem.
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Check 2}
+
+An almost linear time algorithm to solve Markov Chains for directed graphs~\cite{1611.00755,1811.10722}.
+
+Maurio Maggione works in diffusion geometry~\cite{maggioni2020homepage}.
+
+Interesting approach to approximate Laplacians via Gaussian eliminations where nodes are removed and its adjacent links replaced randomly by links among its neighbors~\cite{1605.02353}.
+Sounds kind of real-space coarse-graining.
+Check the course by N.~Saito about harmonic analysis of graphs~\cite{saito2019harmonic}.
+Quantum Mechanics on Graphs~\cite{mnev2016graph}.
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% TEMPLATES
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Tables and Figures}
+
+\begin{itemize}
+\item Use \texttt{tabular} for basic tables --- see Table~\ref{tab:widgets}, for example.
+\item You can upload a figure (JPEG, PNG or PDF) using the files menu. 
+\item To include it in your document, use the \texttt{includegraphics} command (see the comment below in the source code).
+\end{itemize}
+
+% Commands to include a figure:
+%\begin{figure}
+%\includegraphics[width=\textwidth]{your-figure's-file-name}
+%\caption{\label{fig:your-figure}Caption goes here.}
+%\end{figure}
+
+\begin{table}
+\centering
+\begin{tabular}{l|r}
+Item & Quantity \\\hline
+Widgets & 42 \\
+Gadgets & 13
+\end{tabular}
+\caption{\label{tab:widgets}An example table.}
+\end{table}
+
+% Take a look into...
+% https://physics.aps.org/articles/v13/116
+
+\end{frame}
+
