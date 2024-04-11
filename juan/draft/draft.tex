@@ -56,6 +56,7 @@
 %]{geometry}
 
 \usepackage{color}
+\usepackage{subfiles}
 
 % Custom commands
 \newcommand{\FF}{\mathbb{F}}
@@ -82,9 +83,7 @@
 
 \preprint{APS/123-QED}
 
-\title{
-Title
-}% Force line breaks with \\
+\title{Sincronizacion y encarrilamiento en redes complejas: una herramienta para el modelado del comportamiento del NSQ}% Force line breaks with \\
 %\thanks{A footnote to the article title}%
 
 \author{Luca Battiston}
@@ -130,7 +129,7 @@ Facultad de Matem\'atica, Astronom\'ia, F\'isica y Computaci\'on, Universidad Na
              %  but any date may be explicitly specified
 
 \begin{abstract}
-Bla bla bla...
+Escribir resumen 
 %\begin{description}
 %\item[Usage]
 %Secondary publications and information retrieval purposes.
@@ -146,24 +145,14 @@ Bla bla bla...
 
 %\tableofcontents
 
-\section{
-\label{intro}
-Introduction
-}
+\section{\label{intro}Introduction}
+\subfile{Introduction}
 
-In bla bla~\cite{boghosian2014kinetics} and in bla bla~\cite{boghosian2017oligarchy}.
-
-\section{
-\label{theory}
-Theory
-}
+\section{\label{theory}Theory}
 
 Bla bla...
 
-\section{
-\label{results}
-Results
-}
+\section{\label{results}Results}
 
 In Fig.~\ref{fig:1}...
 
