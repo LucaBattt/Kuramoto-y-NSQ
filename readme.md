@@ -6,7 +6,7 @@
 
 Simulaciones en redes aleatorias:
 
-- [ ] Corregir parámetro de orden. 
+- [ ] Corregir parámetro de orden.
 - [ ] Simular vs b para el caso en que la perturbación afecta a todos los osciladores.
 - [ ] Explorar vs lambda, para cada b para detuning cero.
 - [ ] Repetir lo anterior, variando el detuning.
