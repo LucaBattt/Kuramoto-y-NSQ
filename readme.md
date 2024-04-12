@@ -2,6 +2,16 @@
 
 ## Log
 
+### 2024-04-12
+
+Simulaciones en redes aleatorias:
+
+- [ ] Corregir parámetro de orden. 
+- [ ] Simular vs b para el caso en que la perturbación afecta a todos los osciladores.
+- [ ] Explorar vs lambda, para cada b para detuning cero.
+- [ ] Repetir lo anterior, variando el detuning.
+- [ ] Repetir lo anterior en redes small-world.
+
 ### 2024-04-05
 
 - [x] Mandar resumen a [TREFEMAC XXI](https://sites.google.com/view/trefemac-2024).
