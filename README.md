@@ -6,6 +6,6 @@
 
 - [x] Mandar resumen a [TREFEMAC XXI](https://sites.google.com/view/trefemac-2024).
 - [x] Hacer correcciones a la Tesina (va en el repo de la Tesina).
-- [ ] Armar draft del review. Comenzar con Rodriguez, Zanette y Sakaguchi.
+- [x] Armar draft del review. Comenzar con Rodriguez, Zanette y Sakaguchi.
 - [ ] Corregir parámetro de orden para el caso del sistema perturbado.
 
