@@ -8,8 +8,8 @@ Simulaciones en redes aleatorias:
 
 - [x] Simular vs b para el caso en que la perturbación afecta a todos los osciladores.
 - [x] Corregir parámetro de orden.
-- [ ] Construir histograma para valores de $\lambda$ de la frecuencia media de los osciladores.
-- [ ] Explorar vs lambda, para cada b para detuning cero.
+- [x] Construir histograma para valores de $\lambda$ de la frecuencia media de los osciladores.
+- [x] Explorar vs lambda, para cada b para detuning cero.
 - [ ] Repetir lo anterior, variando el detuning.
 - [ ] Repetir lo anterior en redes small-world.
 
