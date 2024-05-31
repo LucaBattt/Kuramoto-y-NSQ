@@ -4,7 +4,7 @@
 
 ### 2024-05-29
 
-- [] Review.
+- [ ] Review.
 
 Revisar biblio para ver si lo siguiente está hecho o no:
 
