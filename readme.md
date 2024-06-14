@@ -8,10 +8,12 @@
 
 Revisar biblio para ver si lo siguiente está hecho o no:
 
-- [ ] Kuramoto + Percolación en Small World con FSSA?
-- [ ] Kuramoto con zeitgeber + Percolación con FSSA?
+- [x] Kuramoto + Percolación en Small World con FSSA?
+- [x] Kuramoto con zeitgeber + Percolación con FSSA?
 - [ ] Modelo más complejo que Kuramoto, que sirva para estudiar el NSQ, en redes, con analisis de estabilidad QMF y HMF.
-- [ ] Kuranmoto + Percolacion con FSSA, variando ancho de distribucion de frecuencias naturales.
+- [ ] Kuramoto + Percolacion con FSSA, variando ancho de distribucion de frecuencias naturales.
+      (10.1103/PhysRevE.78.011113)
+      (10.1103/PhysRevE.76.057201)
 
 
 ### 2024-04-12
